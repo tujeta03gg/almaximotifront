@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Edit Product</h1>
+<div mat-dialog-content>
+  <form [formGroup]="productForm">
+    <mat-form-field>
+      <mat-label>Proveedor</mat-label>
+      <mat-select formControlName="name">
+        <mat-option *ngFor="let supplier of suppliers" [value]="supplier.name">{{ supplier.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <mat-label>clave Producto</mat-label>
+      <input matInput formControlName="supplierProductKey">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <mat-label>Costo</mat-label>
+      <input matInput formControlName="supplierCost">
+    </mat-form-field>
+    <br>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" type="submit" class="custom-button" (click)="onSave()">Guardar</button>
+  <button mat-raised-button color="primary" type="submit" class="custom-button-cancel" (click)="onCancel()">Cancelar</button>
+</div>

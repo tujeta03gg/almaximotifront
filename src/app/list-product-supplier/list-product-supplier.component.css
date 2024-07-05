@@ -1,0 +1,38 @@
+.mat-elevation-z8 {
+    margin: 20px;
+    padding: 10px;
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Ajusta el espaciado entre las columnas */
+    margin: 20px;
+    padding: 10px;
+  }
+  
+  .column {
+    flex: 1 1 45%; /* Cada columna ocupa el 45% del contenedor para dar espacio */
+    padding: 0 10px; /* Añade un pequeño espacio entre columnas */
+    margin: 20px;
+    padding: 10px;
+  }
+  .custom-button {
+    background-color: #1976d2; /* Color primario */
+    color: white; /* Color del texto */
+    font-weight: bold; /* Negrita */
+    padding: 10px 20px; /* Espaciado interno */
+    border-radius: 4px; /* Bordes redondeados */
+    text-transform: uppercase; /* Texto en mayúsculas */
+    transition: background-color 0.3s ease; /* Transición suave */
+  }
+  
+  .custom-button:hover {
+    background-color: #1565c0; /* Color primario más oscuro al pasar el mouse */
+  }
+  
+  .custom-button:disabled {
+    background-color: #cccccc; /* Color de fondo cuando está deshabilitado */
+    color: #666666; /* Color del texto cuando está deshabilitado */
+  }
+  
+  
