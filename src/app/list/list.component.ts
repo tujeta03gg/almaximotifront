@@ -28,8 +28,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ListComponent implements AfterViewInit {
 
-  API_URL = 'http://localhost:5000/Product/';
-  API_URL_SELECT = 'http://localhost:5000/Select/';
+  API_URL = 'http://localhost:5000/products/';
   products: any = [];
   types: any[] = [];
   suppliers: any[] = [];
@@ -41,8 +40,8 @@ export class ListComponent implements AfterViewInit {
       name: [null],
       price: [null],
       productKey: [null],
-      typeID: [null],
-      supplierID: [null],
+      typeId: [null],
+      supplierId: [null],
       supplierProductKey: [null],
       supplierCost: [null]
     });
@@ -50,7 +49,7 @@ export class ListComponent implements AfterViewInit {
   }
 
 
-  displayedColumns: string[] = ['edit','name', 'typeName', 'productKey', 'price','delete'];
+  displayedColumns: string[] = ['edit','name', 'typeProduct', 'productKey', 'price','delete'];
   dataSource = new MatTableDataSource<Product>(this.products);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -79,7 +78,7 @@ export class ListComponent implements AfterViewInit {
   }
 
   getTypes(): void {
-    this.http.get<any[]>(`${this.API_URL_SELECT}get_types`).subscribe((data) => {
+    this.http.get<any[]>(`${this.API_URL}get_types`).subscribe((data) => {
       this.types = data;
     },
     (error) => {
@@ -89,7 +88,7 @@ export class ListComponent implements AfterViewInit {
   }
 
   getSuppliers(): void {
-    this.http.get<any[]>(`${this.API_URL_SELECT}get_suppliers`).subscribe((data) => {
+    this.http.get<any[]>(`${this.API_URL}get_suppliers`).subscribe((data) => {
       this.suppliers = data;
     },
     (error) => {
@@ -99,19 +98,7 @@ export class ListComponent implements AfterViewInit {
   }
 
   deleteProduct(productId: number): void {
-    
-    const json = {
-      id: productId
-    };
-
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      }),
-      body: json
-    };
-  
-    this.http.delete(`${this.API_URL}remove`, options).subscribe(
+    this.http.delete(`${this.API_URL}${productId}`).subscribe(
       (data) => {
         Swal.fire({
           title: 'Producto Eliminado',
@@ -149,14 +136,14 @@ export class ListComponent implements AfterViewInit {
         (data) => {
           Swal.fire({
             title: 'Producto Actualizado',
-            text: 'El producto ha sido actualizado con éxito',
+            text: 'El producto ha sido guardado con éxito',
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
           //add type name to the product
           this.types.forEach((type: any) => {
             if (type.id === product.typeID) {
-              product.typeName = type.name;
+              product.typeProduct = type.name;
             }
           });
           //add the product to the top list
@@ -168,7 +155,7 @@ export class ListComponent implements AfterViewInit {
         (error) => {
           Swal.fire({
             title: 'Error',
-            text: 'Ha ocurrido un error al actualizar el producto',
+            text: 'Ha ocurrido un error al guardar el producto',
             icon: 'error',
             confirmButtonText: 'Aceptar'
           });
@@ -184,7 +171,7 @@ export class ListComponent implements AfterViewInit {
 export interface Product {
   id: number;
   name: string;
-  typeName: string;
+  typeProduct: string;
   productKey: string;
   deleted: boolean;
   price: string;

@@ -22,7 +22,7 @@
           <div class="column">
             <mat-form-field>
               <mat-label>Tipo</mat-label>
-              <mat-select formControlName="typeID">
+              <mat-select formControlName="typeId">
                 <mat-option *ngFor="let type of types" [value]="type.id">{{ type.name }}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -33,7 +33,7 @@
         <div class="column">
             <mat-form-field>
                 <mat-label>Proveedor</mat-label>
-                <mat-select formControlName="supplierID">
+                <mat-select formControlName="supplierId">
                   <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">{{ supplier.name }}</mat-option>
                 </mat-select>
               </mat-form-field>
@@ -82,9 +82,9 @@
         </ng-container>
         
         <!-- Symbol Column -->
-        <ng-container matColumnDef="typeName">
+        <ng-container matColumnDef="typeProduct">
             <th mat-header-cell *matHeaderCellDef mat-srt-header> TipoProducto </th>
-            <td mat-cell *matCellDef="let element"> {{element.typeName}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.typeProduct}} </td>
         </ng-container>
 
         <!-- Weight Column -->

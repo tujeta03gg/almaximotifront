@@ -35,8 +35,7 @@ import { types } from 'util';
 })
 export class ListComponent implements AfterViewInit {
 
-  API_URL = 'http://localhost:5000/Product/';
-  API_URL_SELECT = 'http://localhost:5000/Select/';
+  API_URL = 'http://localhost:5000/products/';
 
   products: any = [];
   product: any;
@@ -52,13 +51,13 @@ export class ListComponent implements AfterViewInit {
     this.productForm = this.fb.group({
       id: [null],
       name: [null],
-      typeName: [null],
+      typeProduct: [null],
       productKey: [null],
       price: [null]
     });
    }
 
-  displayedColumns: string[] = ['edit','name', 'supplierProductKey', 'supplierCost','delete'];
+  displayedColumns: string[] = ['edit','supplierName', 'supplierProductKey', 'supplierCost','delete'];
   dataSource = new MatTableDataSource<Product>(this.products);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -98,14 +97,14 @@ export class ListComponent implements AfterViewInit {
         id: [data.id],
         name: [data.name],
         productKey: [data.productKey],
-        typeName: [data.typeName],
+        typeProduct: [data.typeProduct],
         price: [data.price]
       });
     });
   }
 
   getTypes(): void {
-    this.http.get<any[]>(`${this.API_URL_SELECT}get_types`).subscribe((data) => {
+    this.http.get<any[]>(`${this.API_URL}get_types`).subscribe((data) => {
       this.types = data;
     },
     (error) => {
@@ -116,18 +115,7 @@ export class ListComponent implements AfterViewInit {
 
   deleteProduct(productId: number): void {
     
-    const json = {
-      id: productId
-    };
-
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      }),
-      body: json
-    };
-  
-    this.http.delete(`${this.API_URL}removeProduct`, options).subscribe(
+    this.http.delete(`${this.API_URL}ProductSupplier/${productId}`).subscribe(
       (data) => {
         Swal.fire({
           title: 'Producto Eliminado',
@@ -160,11 +148,11 @@ export class ListComponent implements AfterViewInit {
       supplierId: null,
       supplierCost: null
     };
-    this.http.get<any>(`${this.API_URL}productsSupplier/${productId}`).subscribe((data) => {
+    this.http.get<any>(`${this.API_URL}get_product/${productId}`).subscribe((data) => {
       product.id = data.id;
-      product.name = data.name;
+      product.name = data.supplierName;
       product.supplierProductKey = data.supplierProductKey;
-      product.supplierId = data.supplierID;
+      product.supplierId = data.supplierId;
       product.supplierCost = data.supplierCost;
 
       if(product == null || product.id == null){
@@ -187,14 +175,14 @@ export class ListComponent implements AfterViewInit {
       let product = this.productForm.value;
       //put type id in the product object
       this.types.forEach((type: any) => {
-        if (type.name === product.typeName) {
+        if (type.name === product.typeProduct) {
           product.typeId = type.id;
         }
       });
-      //remove the typeName from the object
-      delete product.typeName;
+      //remove the typeProduct from the object
+      delete product.typeProduct;
 
-      this.http.put(`${this.API_URL}modify`, product).subscribe(
+      this.http.put(`${this.API_URL}${product.id}`, product).subscribe(
         (data) => {
           Swal.fire({
             title: 'Producto Actualizado',

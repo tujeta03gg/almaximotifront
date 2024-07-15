@@ -26,8 +26,7 @@ export class EditProductComponent {
 
   productForm: FormGroup;
   suppliers: any[] = [];
-  API_URL = 'http://localhost:5000/Select/';
-  API_URL_PRODUCT = 'http://localhost:5000/Product/';
+  API_URL = 'http://localhost:5000/products/';
   constructor(
     public dialogRef: MatDialogRef<EditProductComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -35,7 +34,7 @@ export class EditProductComponent {
     private http: HttpClient,
     private route: ActivatedRoute
   ) {
-    console.log("data"+JSON.stringify(data));
+    console.log("data"+JSON.stringify(data.data));
     // Swal.fire('Error', JSON.stringify(data), 'error');
     this.productForm = this.fb.group({
       id: [data.data.id],
@@ -76,7 +75,7 @@ export class EditProductComponent {
       delete product.name;
       delete product.supplierID;
 
-      this.http.put(`${this.API_URL_PRODUCT}modifyProduct`, product).subscribe(
+      this.http.put(`${this.API_URL}edit/${product.id}`, product).subscribe(
         (data) => {
           //realod page before close
           Swal.fire({
